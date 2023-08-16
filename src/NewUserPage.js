@@ -1,4 +1,4 @@
-// LoginPage.js
+// Login.js
 // RegisterPage.js
 import React, { useState } from 'react';
 
