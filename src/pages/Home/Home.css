@@ -1,4 +1,10 @@
-.button-home {
-    width: "50px";
-    margin: "10px";
+.home-container {
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.login-footer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
