@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import LoginIcon from "@mui/icons-material/Login";
 import { useNavigate } from "react-router-dom";
 
 export default function Register() {

@@ -7,52 +7,100 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import LoginIcon from "@mui/icons-material/Login";
 import { useNavigate } from "react-router-dom";
 import CustomDatePicker from "../../components/CusotmDatePicker";
 import CustomDropDown from "../../components/CustomDropDown";
+import { occupationTypes, sourceOfIncomeOptions } from "../../utils/constants";
 
 export default function SavingsAccount() {
   const navigate = useNavigate();
+
+  const [title, setTitle] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [middleName, setMiddleName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [fathersName, setFathersName] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [email, setEmail] = useState('');
+  const [aadhar, setAadhar] = useState('')
+  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [residentialAddress, setResidentialAddress] = useState({
+    line1: '',
+    line2: '',
+    city: '',
+    pincode: ''
+  });
+  const [permanentAddress, setPermanentAddress] = useState({
+    line1: '',
+    line2: '',
+    city: '',
+    pincode: ''
+  })
+  const [occupationDetails, setOccupationDetails] = useState({
+    occupationType: "",
+    sourceOfIncome: "",
+    grossAnnualIncome: ""
+  })
+  const [debitCardRequired, setDebitCardRequired] = useState(false)
+  const [optingForNetBanking, setOptingForNetBanking] = useState(false)
+  const [agreeTerms, setAgreeTerms] = useState(false);
+
 
   const handleRouteChange = (route) => {
     navigate(route);
   };
 
-  const occupationTypes = [
-    { value: "salaried", label: "Salaried Employee" },
-    { value: "self-employed", label: "Self-Employed / Business Owner" },
-    { value: "student", label: "Student" },
-    { value: "retired", label: "Retired" },
-    { value: "homemaker", label: "Homemaker" },
-    { value: "unemployed", label: "Unemployed" },
-    { value: "freelancer", label: "Freelancer / Contractor" },
-    {
-      value: "professional",
-      label: "Professional (Doctor, Lawyer, Engineer, etc.)",
-    },
-    { value: "government-employee", label: "Government Employee" },
-    { value: "private-sector-employee", label: "Private Sector Employee" },
-    { value: "entrepreneur", label: "Entrepreneur" },
-    { value: "artist", label: "Artist / Creative Professional" },
-    { value: "farmer", label: "Farmer" },
-    { value: "technician", label: "Technician / Skilled Worker" },
-  ];
+  const sanityChecker = () => {
+    let check = 'false;'
+    if (!title) return { check, message: "Title cannot be empty" };
+    if (!firstName) return { check, message: "Firstname cannot be empty" };
+  }
 
-  const sourceOfIncomeOptions = [
-    { value: "salary", label: "Salary / Wages" },
-    { value: "business-income", label: "Business Income / Self-Employment" },
-    {
-      value: "investments",
-      label: "Investments (Dividends, Interest, Capital Gains)",
-    },
-    { value: "rental-income", label: "Rental Income" },
-    { value: "pension", label: "Pension" },
-    { value: "social-security", label: "Social Security" },
-    { value: "government-assistance", label: "Government Assistance" },
-    { value: "spouses-income", label: "Spouse's Income" },
-    { value: "savings-inheritance", label: "Savings / Inheritance" },
-  ];
+  const handleButtonSubmit = () => {
+    // do sanitycheck
+
+
+  }
+
+  const handleTitleChange = (e) => {
+    setTitle(e.target.value);
+  }
+
+  const handleFirstNameChange = (e) => {
+    setFirstName(e.target.value)
+  }
+
+  const handleMiddleNameChange = (e) => {
+    setMiddleName(e)
+  }
+
+  const handleLastNameChange = (e) => {
+    setLastName(e.target.value);
+  }
+
+  const handleFathersNameChange = (e) => {
+    setFathersName(e.target.value);
+  }
+
+  const handleMobileNumberChange = (e) => {
+    setMobileNumber(e.target.value);
+  }
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  }
+
+  const handleAadharChange = (e) => {
+    setAadhar(e.target.value);
+  }
+
+  const handleDobChange = (e) => {
+    setDateOfBirth(e.target.value)
+  }
+
+  const handleResidentialAddressChange = (e) => {
+    // setResidentialAddress({...prevValues, })
+  }
 
   return (
     <Box
@@ -100,6 +148,8 @@ export default function SavingsAccount() {
             width: "400px",
             margin: "5px",
           }}
+          value={title}
+          onChange={handleTitleChange}
         />
         <TextField
           required
@@ -110,6 +160,8 @@ export default function SavingsAccount() {
             width: "400px",
             margin: "5px",
           }}
+          value={firstName}
+          onChange={handleFirstNameChange}
         />
         <TextField
           required
@@ -120,6 +172,8 @@ export default function SavingsAccount() {
             width: "400px",
             margin: "5px",
           }}
+          value={middleName}
+          onChange={handleMiddleNameChange}
         />
         <TextField
           required
@@ -130,6 +184,8 @@ export default function SavingsAccount() {
             width: "400px",
             margin: "5px",
           }}
+          value={lastName}
+          onChange={handleLastNameChange}
         />
         <TextField
           required
@@ -140,6 +196,8 @@ export default function SavingsAccount() {
             width: "400px",
             margin: "5px",
           }}
+          value={fathersName}
+          onChange={handleFathersNameChange}
         />
         <TextField
           required
@@ -150,6 +208,8 @@ export default function SavingsAccount() {
             width: "400px",
             margin: "5px",
           }}
+          value={mobileNumber}
+          onChange={handleMobileNumberChange}
         />
         <TextField
           required
@@ -160,6 +220,8 @@ export default function SavingsAccount() {
             width: "400px",
             margin: "5px",
           }}
+          value={email}
+          onChange={handleEmailChange}
         />
         <TextField
           required
@@ -170,6 +232,8 @@ export default function SavingsAccount() {
             width: "400px",
             margin: "5px",
           }}
+          value={aadhar}
+          onChange={handleAadharChange}
         />
         <CustomDatePicker />
         <div>
@@ -411,9 +475,7 @@ export default function SavingsAccount() {
           width: "400px",
           margin: "5px",
         }}
-        onClick={() => {
-          handleRouteChange("/login");
-        }}
+        onClick={handleButtonSubmit}
       >
         Create account
       </Button>
