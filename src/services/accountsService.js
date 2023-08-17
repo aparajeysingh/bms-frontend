@@ -1,22 +1,21 @@
 import httpClient from "./index";
 
-const getAll = () => {
-    return httpClient.get('/employees');
-}
+export const getAll = () => {
+  return httpClient.get("/employees");
+};
 
-const create = data => {
-    return httpClient.post("/employees", data);
-}
+export const createNewAccount = (data) => {
+  return httpClient.post("/accounts", data);
+};
 
-const get = id => {
-    return httpClient.get(`/employees/${id}`);
-}
+export const getAccountById = (id) => {
+  return httpClient.get(`/employees/${id}`);
+};
 
-const update = data => {
-    return httpClient.put('/employees', data);
-}
+export const updateAccount = (data) => {
+  return httpClient.put("/employees", data);
+};
 
-const remove = id => {
-    return httpClient.delete(`/employees/${id}`);
-}
-export default { getAll, create, get, update, remove };
+export const deleteAccount = (id) => {
+  return httpClient.delete(`/employees/${id}`);
+};

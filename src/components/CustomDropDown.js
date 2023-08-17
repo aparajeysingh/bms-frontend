@@ -28,9 +28,14 @@ export default function CustomDropDown(props) {
         open={open}
         onClose={handleClose}
         onOpen={handleOpen}
-        value={age}
+        value={props.value}
         label={props.label}
-        onChange={handleChange}
+        onChange={(e) => {
+          props.onChange({
+            ...props.previousState,
+            [props.name]: e.target.value,
+          });
+        }}
       >
         {props.options.map((option) => {
           return <MenuItem value={option.value}>{option.label}</MenuItem>;
