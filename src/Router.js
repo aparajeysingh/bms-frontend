@@ -8,6 +8,7 @@ import OpenAccountPage from './OpenAccountPage';
 import ForgotUserIdPage from './ForgotUserIDPage';
 import ForgotPasswordPage from './ForgotPasswordPage';
 import SetNewPasswordPage from './SetNewPasswordPage';
+import DashboardPage from './DashboardPage';
 
 const AppRouter = () => {
   return(
@@ -20,6 +21,8 @@ const AppRouter = () => {
         <Route path="/login/forgotuserid" element={<ForgotUserIdPage/>} />
         <Route path="/login/forgotpassword" element={<ForgotPasswordPage/>} />
         <Route path="/login/setnewpassword" element={<SetNewPasswordPage/>} />
+        <Route path="/dashboard" element={<DashboardPage/>} />
+
       </Routes>
     </Router>
   );

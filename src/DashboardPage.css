@@ -1,0 +1,35 @@
+/* DashboardPage.css */
+
+/* ... previous styles ... */
+
+/* Main content styles */
+.main-content {
+    flex: 4;
+    display: flex;
+    flex-direction: row;
+  }
+  
+  /* Navbar styles */
+  .navbar {
+    background-color: #eee;
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+    flex: 1;
+  }
+  
+  .navbar ul {
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  
+  /* Content area styles */
+  .content {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    flex: 3;
+  }
+  
