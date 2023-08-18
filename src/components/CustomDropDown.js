@@ -37,8 +37,8 @@ export default function CustomDropDown(props) {
           });
         }}
       >
-        {props.options.map((option) => {
-          return <MenuItem value={option.value}>{option.label}</MenuItem>;
+        {props.options.map((option, index) => {
+          return <MenuItem key={index} value={option.value}>{option.label}</MenuItem>;
         })}
       </Select>
     </FormControl>

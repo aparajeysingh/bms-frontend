@@ -31,13 +31,13 @@ export default function SavingsAccount() {
     line1: "",
     line2: "",
     city: "",
-    pincode: "",
+    pinCode: "",
   });
   const [permanentAddress, setPermanentAddress] = useState({
     line1: "",
     line2: "",
     city: "",
-    pincode: "",
+    pinCode: "",
   });
   const [occupationDetails, setOccupationDetails] = useState({
     occupationType: "",
@@ -67,16 +67,21 @@ export default function SavingsAccount() {
       return { check, message: "Date of birth cannot be empty" };
     if (!residentialAddress.line1)
       return { check, message: "Residential address line 1 cannot be empty" };
+    if (!residentialAddress.line2)
+      return { check, message: "Residential address line 2 cannot be empty" };
     if (!residentialAddress.city)
       return { check, message: "City cannot be empty" };
-    if (!residentialAddress.pincode)
-      return { check, message: "Pincode cannot be empty" };
+    if (!residentialAddress.pinCode)
+      return { check, message: "pinCode cannot be empty" };
     if (!permanentAddress.line1)
       return { check, message: "Permanent address line 1 cannot be empty" };
+    if (!permanentAddress.line2)
+      return { check, message: "Permanent address line 2 cannot be empty" };
     if (!permanentAddress.city)
       return { check, message: "Permanent city cannot be empty" };
-    if (!permanentAddress.pincode)
-      return { check, message: "Permanent pincode cannot be empty" };
+
+    if (!permanentAddress.pinCode)
+      return { check, message: "Permanent pinCode cannot be empty" };
 
     if (!occupationDetails.occupationType)
       return { check, message: "Occupation type cannot be empty" };
@@ -99,7 +104,7 @@ export default function SavingsAccount() {
       toast.error(sanityCheck.message);
       return;
     } else {
-      toast.success(sanityCheck.message);
+
       const data = {
         title,
         firstName,
@@ -117,7 +122,19 @@ export default function SavingsAccount() {
         debitCardRequired,
         balance: 0,
       };
-      await createNewAccount(data);
+      const response = await createNewAccount(data);
+
+      if (response.status === 201) {
+        toast.success("Account created successfully", { duration: 6000 });
+
+        setTimeout(() => {
+          handleRouteChange("/")
+        }, 3000)
+      }
+      else {
+        toast.error("We are facing some issues creating your Account, kindly try after some time");
+      }
+
     }
   };
 
@@ -166,7 +183,7 @@ export default function SavingsAccount() {
         line1: "",
         line2: "",
         city: "",
-        pincode: "",
+        pinCode: "",
       });
       setCheckboxes(false);
     }
@@ -391,17 +408,17 @@ export default function SavingsAccount() {
             <TextField
               required
               id="outlined-required"
-              label="Pincode"
+              label="pinCode"
               placeholder="400001"
               sx={{
                 width: "400px",
                 margin: "5px",
               }}
-              value={residentialAddress.pincode}
+              value={residentialAddress.pinCode}
               onChange={(event) => {
                 setResidentialAddress({
                   ...residentialAddress,
-                  pincode: event.target.value,
+                  pinCode: event.target.value,
                 });
               }}
             />
@@ -486,17 +503,17 @@ export default function SavingsAccount() {
               <TextField
                 required
                 id="outlined-required"
-                label="Pincode"
+                label="pinCode"
                 placeholder="400001"
                 sx={{
                   width: "400px",
                   margin: "5px",
                 }}
-                value={permanentAddress.pincode}
+                value={permanentAddress.pinCode}
                 onChange={(event) => {
                   setPermanentAddress({
                     ...permanentAddress,
-                    pincode: event.target.value,
+                    pinCode: event.target.value,
                   });
                 }}
               />
@@ -564,7 +581,7 @@ export default function SavingsAccount() {
           />
         </div>
         <FormControlLabel
-          control={<Checkbox />}
+          control={<Checkbox checked={debitCardRequired} />}
           sx={{
             paddingLeft: "5px",
           }}
@@ -573,7 +590,7 @@ export default function SavingsAccount() {
         />
 
         <FormControlLabel
-          control={<Checkbox />}
+          control={<Checkbox checked={optingForNetBanking} />}
           sx={{
             paddingLeft: "5px",
           }}
@@ -582,7 +599,7 @@ export default function SavingsAccount() {
         />
 
         <FormControlLabel
-          control={<Checkbox />}
+          control={<Checkbox checked={agreeTerms} />}
           sx={{
             paddingLeft: "5px",
           }}

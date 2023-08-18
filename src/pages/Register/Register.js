@@ -5,6 +5,14 @@ import { useNavigate } from "react-router-dom";
 export default function Register() {
   const navigate = useNavigate();
 
+  const [accountNumber, setAccountNumber] = useState("")
+  const [userId, setUserId] = useState("")
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [transactionPassword, setTransactionPassword] = useState("");
+  const [confirmTransactionPassword, setConfirmTransactionPassword] = useState("");
+
+
   const handleRouteChange = (route) => {
     navigate(route);
   };
@@ -95,7 +103,7 @@ export default function Register() {
             margin: "10px",
           }}
         />
-        <TextField
+        {/* <TextField
           required
           id="outlined-required"
           label="Enter OTP"
@@ -104,7 +112,7 @@ export default function Register() {
             width: "400px",
             margin: "10px",
           }}
-        />
+        /> */}
       </div>
       <Button
         variant="contained"
@@ -113,7 +121,7 @@ export default function Register() {
           margin: "10px",
         }}
         onClick={() => {
-          handleRouteChange("/login");
+          
         }}
       >
         Register
