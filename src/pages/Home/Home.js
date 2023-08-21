@@ -7,6 +7,8 @@ import Stack from "@mui/material/Stack";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
 import { Typography } from "@mui/material";
+import homePageAnimation from "../../animation/bank1.json";
+import { Player } from "@lottiefiles/react-lottie-player";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -25,15 +27,12 @@ const Home = () => {
       }}
       className="home-container"
     >
-      <Typography
-        variant="h3"
-        sx={{
-          color: "#3498db",
-        }}
-        gutterBottom
-      >
-        Bank Management System
-      </Typography>
+      <Player
+        autoplay
+        loop
+        src={homePageAnimation}
+        style={{ height: "300px", width: "300px" }}
+      />
       <Button
         variant="outlined"
         endIcon={<LoginIcon />}

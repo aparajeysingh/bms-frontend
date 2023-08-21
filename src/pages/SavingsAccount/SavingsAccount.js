@@ -93,7 +93,7 @@ export default function SavingsAccount() {
     if (!agreeTerms)
       return { check, message: "Please agree to the terms and conditions" };
 
-    return { check: true, message: "Account created successfully" };
+    return { check: true, message: "" };
   };
 
   const handleButtonSubmit = async () => {
@@ -104,7 +104,6 @@ export default function SavingsAccount() {
       toast.error(sanityCheck.message);
       return;
     } else {
-
       const data = {
         title,
         firstName,
@@ -128,13 +127,13 @@ export default function SavingsAccount() {
         toast.success("Account created successfully", { duration: 6000 });
 
         setTimeout(() => {
-          handleRouteChange("/")
-        }, 3000)
+          handleRouteChange("/");
+        }, 3000);
+      } else {
+        toast.error(
+          "We are facing some issues creating your Account, kindly try after some time"
+        );
       }
-      else {
-        toast.error("We are facing some issues creating your Account, kindly try after some time");
-      }
-
     }
   };
 
