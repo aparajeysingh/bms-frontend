@@ -9,6 +9,9 @@ import UserId from "./pages/Forgot/UserId/UserId";
 import Password from "./pages/Forgot/Password/ForgotPassword";
 import SetNewPassword from "./pages/Forgot/Password/SetNewPassword";
 import Dashboard from "./pages/Dashboard/dashboard.js";
+import FundTransfer from "./pages/FundTransfer/";
+import AccountStatement from "./pages/AccountStatement/";
+import Payee from "./pages/Payee/";
 
 const AppRouter = () => {
   return (
@@ -22,6 +25,12 @@ const AppRouter = () => {
         <Route path="/forgot-password" element={<Password />} />
         <Route path="/set-new-password" element={<SetNewPassword />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard/fund-transfer" element={<FundTransfer />} />
+        <Route
+          path="/dashboard/account-statement"
+          element={<AccountStatement />}
+        />
+        <Route path="/dashboard/add-payee" element={<Payee />} />
       </Routes>
     </Router>
   );

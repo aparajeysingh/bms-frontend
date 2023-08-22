@@ -17,7 +17,7 @@ export default function CustomDropDown(props) {
     setOpen(true);
   };
   return (
-    <FormControl sx={{ m: 1, minWidth: 120 }}>
+    <FormControl sx={{ m: 1, minWidth: 120 }} style={props.style}>
       <InputLabel id="demo-controlled-open-select-label">
         {props.label}
       </InputLabel>
@@ -38,7 +38,11 @@ export default function CustomDropDown(props) {
         }}
       >
         {props.options.map((option, index) => {
-          return <MenuItem key={index} value={option.value}>{option.label}</MenuItem>;
+          return (
+            <MenuItem key={index} value={option.value}>
+              {option.label}
+            </MenuItem>
+          );
         })}
       </Select>
     </FormControl>

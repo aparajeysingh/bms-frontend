@@ -14,7 +14,7 @@ export default function CustomDatePicker(props) {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
         label={props.label ?? "Date of birth"}
-        sx={{ width: "400px", margin: "5px" }}
+        sx={{ width: "400px", margin: props.margin ?? "5px" }}
         onChange={(newValue) => {
           dateChange(newValue);
         }}

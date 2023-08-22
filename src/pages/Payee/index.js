@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import Sidebar from "../../components/Sidebar";
 import { getUserInfo } from "../../services/userService";
 import { useNavigate } from "react-router-dom";
-import FundTransfer from "./fundTranser";
+import Payee from "./payee";
 
 const drawerWidth = 240;
 
@@ -49,7 +49,7 @@ export default function Index() {
         </Toolbar>
       </AppBar>
       <Sidebar />
-      <FundTransfer user={userInfo} />
+      <Payee user={userInfo} />
     </Box>
   );
 }

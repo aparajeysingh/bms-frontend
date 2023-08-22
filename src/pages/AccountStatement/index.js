@@ -1,52 +1,55 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
 import AppBar from "@mui/material/AppBar";
 import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import { Button } from "@mui/material";
-import CustomDatePicker from "../../components/CusotmDatePicker";
+import Sidebar from "../../components/Sidebar";
+import { getUserInfo } from "../../services/userService";
+import { useNavigate } from "react-router-dom";
+import AccountStatement from "./accountStatement";
 
+const drawerWidth = 240;
 
-export default function Dashboard() {
+export default function Index() {
+  const [userInfo, setUserInfo] = React.useState("");
+  const navigate = useNavigate();
 
-    return (
+  React.useEffect(() => {
+    getUserInfo().then((res) => {
+      if (res.status === 200) {
+        setUserInfo(res.data);
+      } else {
+        // redirect to login
+        handleRouteChange("/login");
+      }
+    });
+  }, []);
 
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-            <Toolbar />
+  const handleRouteChange = (route) => {
+    navigate(route);
+  };
 
-            <Typography
-                variant="h3"
-                sx={{
-                    color: "#3498db",
-                }}
-                gutterBottom
-            >
-                Account Statement
-            </Typography>
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "row",
-                }}
-            >
-                <CustomDatePicker label="From" />
-                <CustomDatePicker label="To" />
-            </div>
-            <Button
-                variant="contained"
-                sx={{
-                    width: "400px",
-                    margin: "10px",
-                }}
-                onClick={() => { }}
-            >
-                Generate Statement
-            </Button>
-        </Box>
-
-    );
+  return (
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <AppBar
+        position="fixed"
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      >
+        <Toolbar>
+          <Typography variant="h6" noWrap component="div">
+            Welcome{" "}
+            {userInfo
+              ? userInfo.account
+                ? userInfo.account.firstName
+                : ""
+              : ""}
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Sidebar />
+      <AccountStatement user={userInfo} />
+    </Box>
+  );
 }
