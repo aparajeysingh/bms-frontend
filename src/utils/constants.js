@@ -27,4 +27,10 @@ const sourceOfIncomeOptions = [
     { value: "savings-inheritance", label: "Savings / Inheritance" },
 ];
 
-export { occupationTypes, sourceOfIncomeOptions };
+const transactionType = [
+    { value: 'imps', label: "IMPS" },
+    { value: 'neft', label: "NEFT" },
+    { value: "rtgs", label: "RTGS" }
+]
+
+export { occupationTypes, sourceOfIncomeOptions, transactionType };

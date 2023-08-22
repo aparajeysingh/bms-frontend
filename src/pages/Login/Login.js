@@ -53,7 +53,7 @@ const Login = () => {
             handleRouteChange("/dashboard");
           }, 1500);
         } else {
-          toast.error("Login failed");
+          toast.error(res.data.message);
         }
       });
     }

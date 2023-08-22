@@ -19,10 +19,37 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import { Button, TextField } from "@mui/material";
 import CustomDatePicker from "../../components/CusotmDatePicker";
+import Sidebar from "../../components/Sidebar"
+import { getUserInfo } from "../../services/userService";
+import { useNavigate } from "react-router-dom";
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import Home from "./Home";
 
 const drawerWidth = 240;
 
 export default function Dashboard() {
+
+  const [userInfo, setUserInfo] = React.useState('');
+  const [count, setCount] = React.useState(1)
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    getUserInfo().then((res) => {
+      if (res.status === 200) {
+        setUserInfo(res.data)
+      }
+      else {
+        // redirect to login
+        handleRouteChange("/login");
+      }
+    })
+  }, [])
+
+  const handleRouteChange = (route) => {
+    navigate(route);
+  }
+
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -32,92 +59,12 @@ export default function Dashboard() {
       >
         <Toolbar>
           <Typography variant="h6" noWrap component="div">
-            Welcome John
+            Welcome {userInfo ? userInfo.account ? userInfo.account.firstName : "" : ""}
           </Typography>
         </Toolbar>
       </AppBar>
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: {
-            width: drawerWidth,
-            boxSizing: "border-box",
-          },
-        }}
-      >
-        <Toolbar />
-        <Box sx={{ overflow: "auto" }}>
-          <List>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <AccountBalanceIcon />
-                </ListItemIcon>
-                <ListItemText primary="Account Details" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <SummarizeIcon />
-                </ListItemIcon>
-                <ListItemText primary="Account Summary" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <AttachMoneyIcon />
-                </ListItemIcon>
-                <ListItemText primary="Funds Transfer" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <ReceiptLongIcon />
-                </ListItemIcon>
-                <ListItemText primary="Account Statement" />
-              </ListItemButton>
-            </ListItem>
-            {/* ))} */}
-          </List>
-        </Box>
-      </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Toolbar />
-
-        <Typography
-          variant="h3"
-          sx={{
-            color: "#3498db",
-          }}
-          gutterBottom
-        >
-          Account Statement
-        </Typography>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-          }}
-        >
-          <CustomDatePicker label="From" />
-          <CustomDatePicker label="To" />
-        </div>
-        <Button
-          variant="contained"
-          sx={{
-            width: "400px",
-            margin: "10px",
-          }}
-          onClick={() => {}}
-        >
-          Generate Statement
-        </Button>
-      </Box>
+      <Sidebar />
+      {count && count === 1 ? <Home /> : ""}
     </Box>
   );
 }
