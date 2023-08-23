@@ -5,7 +5,14 @@ export const getAll = () => {
 };
 
 export const createNewAccount = (data) => {
-  return httpClient.post("/accounts", data);
+  return httpClient
+    .post("/accounts", data)
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      return err.response;
+    });
 };
 
 export const getAccountById = (id) => {

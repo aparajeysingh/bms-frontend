@@ -1,8 +1,8 @@
 import httpClient from ".";
 
-export const createTransaction = async (data) => {
+export const getAccountsToApprove = async () => {
   return httpClient
-    .post("/transaction", data, {
+    .get("/accounts", {
       headers: {
         Authorization: await localStorage.getItem("authToken"), // Sending token in "Authorization" header
       },
@@ -15,11 +15,24 @@ export const createTransaction = async (data) => {
     });
 };
 
-//localhost:8081/api/transaction/accNumber/timestamp
-
-export const getTransactions = async (data) => {
+export const approveAccount = async (id) => {
   return httpClient
-    .post("/transaction/accNumber/timestamp", data, {
+    .put(`/accounts/${id}`, {
+      headers: {
+        Authorization: await localStorage.getItem("authToken"), // Sending token in "Authorization" header
+      },
+    })
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      return err.response;
+    });
+};
+
+export const disapproveAccount = async (id) => {
+  return httpClient
+    .delete(`/accounts/${id}`, {
       headers: {
         Authorization: await localStorage.getItem("authToken"), // Sending token in "Authorization" header
       },

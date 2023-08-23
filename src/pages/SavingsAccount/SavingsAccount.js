@@ -130,9 +130,7 @@ export default function SavingsAccount() {
           handleRouteChange("/");
         }, 3000);
       } else {
-        toast.error(
-          "We are facing some issues creating your Account, kindly try after some time"
-        );
+        toast.error(response.data.message);
       }
     }
   };

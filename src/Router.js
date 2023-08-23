@@ -12,6 +12,8 @@ import Dashboard from "./pages/Dashboard/dashboard.js";
 import FundTransfer from "./pages/FundTransfer/";
 import AccountStatement from "./pages/AccountStatement/";
 import Payee from "./pages/Payee/";
+import AdminLogin from "./pages/Login/adminLogin";
+import AdminDashboard from "./pages/Dashboard/adminDashboard";
 
 const AppRouter = () => {
   return (
@@ -31,6 +33,8 @@ const AppRouter = () => {
           element={<AccountStatement />}
         />
         <Route path="/dashboard/add-payee" element={<Payee />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
       </Routes>
     </Router>
   );

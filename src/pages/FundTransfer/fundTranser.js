@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, TextField, Toolbar, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
@@ -13,6 +13,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { getUserInfo } from "../../services/userService";
+import dayjs from "dayjs";
 import { createTransaction } from "../../services/transactionsService";
 
 export default function FundTransfer(props) {
@@ -26,7 +27,7 @@ export default function FundTransfer(props) {
   const [dateOfTransaction, setDateOfTransaction] = useState("");
   const [transactionType, setTransactionType] = useState("");
   const [remark, setRemark] = useState("");
-  const [pin, setPin] = useState("")
+  const [pin, setPin] = useState("");
   const [maturityInstructions, setMaturityInstructions] = useState("");
 
   const handleRouteChange = (route) => {
@@ -44,7 +45,7 @@ export default function FundTransfer(props) {
     //     "fromAcc": 1,
     //     "toAcc": 3,
     //     "amount": 70000,
-    //     "transType": "NEFT",      
+    //     "transType": "NEFT",
     //     "timeStamp": "2027-09-07",
     //     "pin": "1234"
     // }
@@ -54,18 +55,16 @@ export default function FundTransfer(props) {
       amount,
       transType: transactionType,
       timeStamp: transactionDate,
-      pin
-    }
+      pin,
+    };
     createTransaction(data).then((res) => {
-
       if (res.status === 201) {
-        toast.success('Transaction successfull with id: ' + res.data.transId)
+        toast.success("Transaction successfull with id: " + res.data.transId);
+      } else {
+        toast.error(res.data.message);
       }
-      else {
-        toast.error(res.data.message)
-      }
-    })
-  }
+    });
+  };
 
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
@@ -106,8 +105,10 @@ export default function FundTransfer(props) {
                 width: "400px",
                 margin: "10px 5px",
               }}
-              value={fromAccount}
-              onChange={(e) => setFromAccount(e.target.value)}
+              disabled={true}
+              value={
+                props && props?.user ? props?.user?.account?.accNumber : ""
+              }
             />
             <TextField
               required
@@ -135,9 +136,10 @@ export default function FundTransfer(props) {
             />
             <CustomDatePicker
               onChange={setTransactionDate}
-              value={transactionDate}
+              value={dayjs(Date.now()).format("YYYY-MM-DD")}
               margin={"10px 5px"}
               label={"Date of transaction"}
+              disabled={true}
             />
 
             <FormControl
