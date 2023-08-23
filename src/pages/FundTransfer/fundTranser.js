@@ -13,6 +13,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { getUserInfo } from "../../services/userService";
+import { createTransaction } from "../../services/transactionsService";
 
 export default function FundTransfer(props) {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ export default function FundTransfer(props) {
   const [dateOfTransaction, setDateOfTransaction] = useState("");
   const [transactionType, setTransactionType] = useState("");
   const [remark, setRemark] = useState("");
+  const [pin, setPin] = useState("")
   const [maturityInstructions, setMaturityInstructions] = useState("");
 
   const handleRouteChange = (route) => {
@@ -36,6 +38,34 @@ export default function FundTransfer(props) {
 
     return { check: true, message: "" };
   };
+
+  const handleTransaction = () => {
+    //   {
+    //     "fromAcc": 1,
+    //     "toAcc": 3,
+    //     "amount": 70000,
+    //     "transType": "NEFT",      
+    //     "timeStamp": "2027-09-07",
+    //     "pin": "1234"
+    // }
+    const data = {
+      fromAcc: fromAccount,
+      toAcc: toAccount,
+      amount,
+      transType: transactionType,
+      timeStamp: transactionDate,
+      pin
+    }
+    createTransaction(data).then((res) => {
+
+      if (res.status === 201) {
+        toast.success('Transaction successfull with id: ' + res.data.transId)
+      }
+      else {
+        toast.error(res.data.message)
+      }
+    })
+  }
 
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
@@ -161,6 +191,17 @@ export default function FundTransfer(props) {
                 margin: "10px 5px",
               }}
             />
+            <TextField
+              id="outlined-required"
+              label="PIN"
+              placeholder="enter your pin"
+              sx={{
+                width: "400px",
+                margin: "10px 5px",
+              }}
+              value={pin}
+              onChange={(e) => setPin(e.target.value)}
+            />
           </div>
           <Button
             variant="contained"
@@ -168,6 +209,7 @@ export default function FundTransfer(props) {
               width: "400px",
               margin: "10px 5px",
             }}
+            onClick={handleTransaction}
           >
             Continue
           </Button>
