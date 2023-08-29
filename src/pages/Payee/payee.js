@@ -74,7 +74,11 @@ export default function Payee(props) {
           setReEnterBeneficiaryAccountNumber("");
           setNickName("");
         } else {
-          toast.error("Something went wrong, " + res.data.message);
+          if (res.data.message.includes("invalid token")) {
+            handleRouteChange("/session-expired")
+          }
+          else
+            toast.error("Something went wrong, " + res.data.message);
         }
       });
     } else {

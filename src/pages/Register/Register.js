@@ -93,16 +93,19 @@ export default function Register() {
     };
 
     createNewNetBankingUser(data).then((res) => {
-      console.log(res);
       if (res.status === 201) {
         toast.success("Successfully registered", { duration: 2000 });
         setTimeout(() => {
           handleRouteChange("/login");
         }, 2000);
       } else {
-        toast.error("Error registering, " + res.data.message, {
-          duration: 3000,
-        });
+        if (res.data.message.includes("invalid token")) {
+          handleRouteChange("/session-expired")
+        }
+        else
+          toast.error("Error registering, " + res.data.message, {
+            duration: 3000,
+          });
       }
     });
   };

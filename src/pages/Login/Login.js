@@ -41,7 +41,6 @@ const Login = () => {
         role: "USER",
       };
       userLogin(data).then((res) => {
-        console.log("res", res);
         if (res.status === 200) {
           toast.success("Login successful", { duration: 2000 });
           setTimeout(() => {
@@ -53,7 +52,11 @@ const Login = () => {
             handleRouteChange("/dashboard");
           }, 1500);
         } else {
-          toast.error(res.data.message);
+          if (res.data.message.includes("invalid token")) {
+            handleRouteChange("/session-expired")
+          }
+          else
+            toast.error(res.data.message);
         }
       });
     }

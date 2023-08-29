@@ -21,7 +21,11 @@ export default function Dashboard() {
         setUserInfo(res.data);
       } else {
         // redirect to login
-        handleRouteChange("/login");
+        if (res.data.message.includes("invalid token")) {
+          handleRouteChange("/session-expired")
+        }
+        else
+          handleRouteChange("/login");
       }
     });
   }, []);

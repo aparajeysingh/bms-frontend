@@ -10,7 +10,6 @@ const userLogin = (data) => {
   return axios
     .post(apiUrl, data, { headers })
     .then((res) => {
-      console.log(res);
       return res;
     })
     .catch((err) => {

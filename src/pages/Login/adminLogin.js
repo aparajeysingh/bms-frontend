@@ -41,19 +41,23 @@ const AdminLogin = () => {
         role: "ADMIN",
       };
       userLogin(data).then((res) => {
-        console.log("res", res);
         if (res.status === 200) {
           toast.success("Login successful", { duration: 2000 });
           setTimeout(() => {
             // get the auth token from the response and store it in local storage
             const authToken = res.data.Authorization;
+            localStorage.clear();
             localStorage.setItem("authToken", authToken);
 
             // redirect to dashboard
             handleRouteChange("/admin-dashboard");
           }, 1500);
         } else {
-          toast.error(res.data.message);
+          if (res.data.message.includes("invalid token")) {
+            handleRouteChange("/session-expired")
+          }
+          else
+            toast.error(res.data.message);
         }
       });
     }

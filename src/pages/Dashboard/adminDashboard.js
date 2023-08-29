@@ -19,10 +19,13 @@ export default function AdminDashboard() {
     getAccountsToApprove().then((res) => {
       if (res.status === 200) {
         setAccountsList(res.data);
-        console.log("res", res.data);
       } else {
         // redirect to login
-        handleRouteChange("/admin-login");
+        if (res.data.message.includes("invalid token")) {
+          handleRouteChange("/session-expired")
+        }
+        else
+          handleRouteChange("/admin-login");
       }
     });
   }, []);

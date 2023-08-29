@@ -11,31 +11,46 @@ import { Button } from "@mui/material";
 import CustomDatePicker from "../../components/CusotmDatePicker";
 import { Toaster, toast } from "react-hot-toast";
 import { getTransactions } from "../../services/transactionsService";
+import CustomTable from "../../components/CustomTable";
+import { useNavigate } from "react-router-dom";
 
 export default function AccountStatement() {
   const [fromDate, setFromDate] = React.useState("");
   const [toDate, setToDate] = React.useState("");
+  const [statement, setStatement] = React.useState([])
+  const [page, setPage] = React.useState(0)
+
+
+  const navigate = useNavigate();
+
+  const handleRouteChange = (route) => {
+    navigate(route);
+  }
 
   const handleGenerateStatement = () => {
     if (!fromDate || !toDate) {
       toast.error("Please select both dates");
       return;
     } else {
-      //       {
-      //     "startTime": "2027-09-07",
-      //     "endTime": "2027-09-07"
-      //     "size":pageSize, "page";pageno,"type" optional fields
-      // }
       const data = {
         startTime: fromDate,
         endTime: toDate,
+        page: page,
+        size: 5
       };
+
+      setPage(page + 1)
       getTransactions(data).then((res) => {
         if (res.status === 200) {
           toast.success("Statement generated successfully");
-          console.log("res", res.data);
+          setStatement(res.data.content)
         } else {
-          toast.error("Something went wrong");
+
+          if (res.data.message.includes("invalid token")) {
+            handleRouteChange("/session-expired")
+          }
+          else
+            toast.error("Something went wrong," + res.data.message);
         }
       });
     }
@@ -72,8 +87,10 @@ export default function AccountStatement() {
         }}
         onClick={handleGenerateStatement}
       >
-        Generate Statement
+        {page === 0 ? "Generate Statement" : "Next Page"}
       </Button>
+
+      <CustomTable statements={statement} />
     </Box>
   );
 }

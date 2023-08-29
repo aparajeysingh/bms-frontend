@@ -71,7 +71,11 @@ export default function Password() {
             handleRouteChange("/login");
           }, 1500);
         } else {
-          toast.error("Password reset failed, " + res.data.message);
+          if (res.data.message.includes("invalid token")) {
+            handleRouteChange("/session-expired")
+          }
+          else
+            toast.error("Password reset failed, " + res.data.message);
         }
       });
     }

@@ -99,7 +99,6 @@ export default function SavingsAccount() {
   const handleButtonSubmit = async () => {
     // do sanitycheck
     const sanityCheck = sanityChecker();
-    console.log(sanityCheck);
     if (!sanityCheck.check) {
       toast.error(sanityCheck.message);
       return;
@@ -128,9 +127,13 @@ export default function SavingsAccount() {
 
         setTimeout(() => {
           handleRouteChange("/");
-        }, 3000);
+        }, 1500);
       } else {
-        toast.error(response.data.message);
+        if (response.data.message.includes("invalid token")) {
+          handleRouteChange("/session-expired")
+        }
+        else
+          toast.error(response.data.message);
       }
     }
   };

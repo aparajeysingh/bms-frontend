@@ -17,7 +17,7 @@ export const getAccountsToApprove = async () => {
 
 export const approveAccount = async (id) => {
   return httpClient
-    .put(`/accounts/${id}`, {
+    .put(`/accounts/${id}`, {}, {
       headers: {
         Authorization: await localStorage.getItem("authToken"), // Sending token in "Authorization" header
       },

@@ -14,6 +14,8 @@ import AccountStatement from "./pages/AccountStatement/";
 import Payee from "./pages/Payee/";
 import AdminLogin from "./pages/Login/adminLogin";
 import AdminDashboard from "./pages/Dashboard/adminDashboard";
+import SessionExpired from "./pages/SessionExpired/sessionExpired"
+import PageNotFound from "./pages/PageNotFound/pageNotFound";
 
 const AppRouter = () => {
   return (
@@ -35,6 +37,8 @@ const AppRouter = () => {
         <Route path="/dashboard/add-payee" element={<Payee />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/session-expired" element={<SessionExpired />} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </Router>
   );

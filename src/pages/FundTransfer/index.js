@@ -21,7 +21,11 @@ export default function Index() {
         setUserInfo(res.data);
       } else {
         // redirect to login
-        handleRouteChange("/login");
+        if (res.data.message.includes("invalid token")) {
+          handleRouteChange("/session-expired")
+        }
+        else
+          handleRouteChange("/login");
       }
     });
   }, []);
@@ -49,7 +53,7 @@ export default function Index() {
         </Toolbar>
       </AppBar>
       <Sidebar />
-      <FundTransfer user={userInfo} />
+      <FundTransfer />
     </Box>
   );
 }

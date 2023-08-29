@@ -19,12 +19,13 @@ import { createTransaction } from "../../services/transactionsService";
 export default function FundTransfer(props) {
   const navigate = useNavigate();
 
+  const [userInfo, setUserInfo] = useState("");
   const [transaction, setTransaction] = useState("");
-  const [transactionDate, setTransactionDate] = useState("");
-  const [fromAccount, setFromAccount] = useState("");
+  const [transactionDate, setTransactionDate] = useState(dayjs(Date.now()));
+  const [fromAccount, setFromAccount] = useState('');
   const [toAccount, setToAccount] = useState("");
   const [amount, setAmount] = useState("");
-  const [dateOfTransaction, setDateOfTransaction] = useState("");
+  // const [dateOfTransaction, setDateOfTransaction] = useState(dayjs(Date.now()));
   const [transactionType, setTransactionType] = useState("");
   const [remark, setRemark] = useState("");
   const [pin, setPin] = useState("");
@@ -34,13 +35,32 @@ export default function FundTransfer(props) {
     navigate(route);
   };
 
+  React.useEffect(() => {
+    getUserInfo().then((res) => {
+      if (res.status === 200) {
+        setUserInfo(res.data);
+        setFromAccount(res.data.account.accNumber)
+      } else {
+        // redirect to login
+        if (res.data.message.includes("invalid token")) {
+          handleRouteChange("/session-expired")
+        }
+        else
+          handleRouteChange("/login");
+      }
+    });
+  }, []);
+
   const sanityCheck = () => {
     let check = false;
+    if (!fromAccount) return { check, message: "From Account cannot be empty" };
+    if (!toAccount) return { check, message: "To Account cannot be empty" };
 
     return { check: true, message: "" };
   };
 
   const handleTransaction = () => {
+    const { check, message } = sanityCheck();
     //   {
     //     "fromAcc": 1,
     //     "toAcc": 3,
@@ -49,21 +69,28 @@ export default function FundTransfer(props) {
     //     "timeStamp": "2027-09-07",
     //     "pin": "1234"
     // }
-    const data = {
-      fromAcc: fromAccount,
-      toAcc: toAccount,
-      amount,
-      transType: transactionType,
-      timeStamp: transactionDate,
-      pin,
-    };
-    createTransaction(data).then((res) => {
-      if (res.status === 201) {
-        toast.success("Transaction successfull with id: " + res.data.transId);
-      } else {
-        toast.error(res.data.message);
-      }
-    });
+
+    if (check) {
+
+      const data = {
+        fromAcc: fromAccount,
+        toAcc: toAccount,
+        amount,
+        transType: transactionType,
+        // timeStamp: transactionDate,
+        pin,
+      };
+      createTransaction(data).then((res) => {
+        if (res.status === 201) {
+          toast.success("Transaction successfull with id: " + res.data.transId);
+        } else {
+          toast.error(res.data.message);
+        }
+      });
+    }
+    else {
+      toast.error(message)
+    }
   };
 
   return (
@@ -107,7 +134,7 @@ export default function FundTransfer(props) {
               }}
               disabled={true}
               value={
-                props && props?.user ? props?.user?.account?.accNumber : ""
+                fromAccount
               }
             />
             <TextField
@@ -136,7 +163,7 @@ export default function FundTransfer(props) {
             />
             <CustomDatePicker
               onChange={setTransactionDate}
-              value={dayjs(Date.now()).format("YYYY-MM-DD")}
+              value={Date.now()}
               margin={"10px 5px"}
               label={"Date of transaction"}
               disabled={true}
@@ -175,7 +202,7 @@ export default function FundTransfer(props) {
               </RadioGroup>
             </FormControl>
 
-            <TextField
+            {/* <TextField
               id="outlined-required"
               label="Maturity Instructions"
               placeholder="enter maturity instructions if any"
@@ -192,7 +219,7 @@ export default function FundTransfer(props) {
                 width: "400px",
                 margin: "10px 5px",
               }}
-            />
+            /> */}
             <TextField
               id="outlined-required"
               label="PIN"
