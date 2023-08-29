@@ -100,9 +100,8 @@ export default function Register() {
         }, 2000);
       } else {
         if (res.data.message.includes("invalid token")) {
-          handleRouteChange("/session-expired")
-        }
-        else
+          handleRouteChange("/session-expired");
+        } else
           toast.error("Error registering, " + res.data.message, {
             duration: 3000,
           });
@@ -168,6 +167,7 @@ export default function Register() {
           required
           id="outlined-required"
           label="Set Password"
+          type="password"
           placeholder="enter new password"
           sx={{
             width: "400px",
@@ -181,6 +181,7 @@ export default function Register() {
           required
           id="outlined-required"
           label="Confirm Password"
+          type="password"
           placeholder="confirm new password"
           sx={{
             width: "400px",
@@ -194,6 +195,7 @@ export default function Register() {
           required
           id="outlined-required"
           label="Set Transaction Password"
+          type="password"
           placeholder="enter new transaction password"
           sx={{
             width: "400px",
@@ -207,6 +209,7 @@ export default function Register() {
           required
           id="outlined-required"
           label="Confirm Transaction Password"
+          type="password"
           placeholder="confirm new transaction password"
           sx={{
             width: "400px",

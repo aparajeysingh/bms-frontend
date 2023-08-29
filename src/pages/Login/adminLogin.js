@@ -54,10 +54,8 @@ const AdminLogin = () => {
           }, 1500);
         } else {
           if (res.data.message.includes("invalid token")) {
-            handleRouteChange("/session-expired")
-          }
-          else
-            toast.error(res.data.message);
+            handleRouteChange("/session-expired");
+          } else toast.error(res?.data?.message);
         }
       });
     }
@@ -108,6 +106,7 @@ const AdminLogin = () => {
           required
           id="outlined-required"
           label="Password"
+          type="password"
           placeholder="enter password"
           sx={{
             width: "400px",

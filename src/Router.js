@@ -14,7 +14,7 @@ import AccountStatement from "./pages/AccountStatement/";
 import Payee from "./pages/Payee/";
 import AdminLogin from "./pages/Login/adminLogin";
 import AdminDashboard from "./pages/Dashboard/adminDashboard";
-import SessionExpired from "./pages/SessionExpired/sessionExpired"
+import SessionExpired from "./pages/SessionExpired/sessionExpired";
 import PageNotFound from "./pages/PageNotFound/pageNotFound";
 
 const AppRouter = () => {
@@ -24,7 +24,6 @@ const AppRouter = () => {
         <Route exact path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/open-new-account" element={<SavingsAccount />} />
-        <Route path="/register" element={<Register />} />
         <Route path="/forgot-user-id" element={<UserId />} />
         <Route path="/forgot-password" element={<Password />} />
         <Route path="/set-new-password" element={<SetNewPassword />} />
@@ -35,6 +34,7 @@ const AppRouter = () => {
           element={<AccountStatement />}
         />
         <Route path="/dashboard/add-payee" element={<Payee />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/session-expired" element={<SessionExpired />} />

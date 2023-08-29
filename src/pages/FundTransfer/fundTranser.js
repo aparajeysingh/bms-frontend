@@ -1,12 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { Box, Button, TextField, Toolbar, Typography } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  Fab,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import CustomDatePicker from "../../components/CusotmDatePicker";
-import { transactionType } from "../../utils/constants";
-import CustomDropDown from "../../components/CustomDropDown";
 import Container from "@mui/material/Container";
-import Card from "@mui/material/Card";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -15,6 +22,8 @@ import FormLabel from "@mui/material/FormLabel";
 import { getUserInfo } from "../../services/userService";
 import dayjs from "dayjs";
 import { createTransaction } from "../../services/transactionsService";
+import { getPayees } from "../../services/payeeService";
+import AddIcon from "@mui/icons-material/Add";
 
 export default function FundTransfer(props) {
   const navigate = useNavigate();
@@ -22,7 +31,7 @@ export default function FundTransfer(props) {
   const [userInfo, setUserInfo] = useState("");
   const [transaction, setTransaction] = useState("");
   const [transactionDate, setTransactionDate] = useState(dayjs(Date.now()));
-  const [fromAccount, setFromAccount] = useState('');
+  const [fromAccount, setFromAccount] = useState("");
   const [toAccount, setToAccount] = useState("");
   const [amount, setAmount] = useState("");
   // const [dateOfTransaction, setDateOfTransaction] = useState(dayjs(Date.now()));
@@ -30,6 +39,7 @@ export default function FundTransfer(props) {
   const [remark, setRemark] = useState("");
   const [pin, setPin] = useState("");
   const [maturityInstructions, setMaturityInstructions] = useState("");
+  const [payeeList, setPayeeList] = useState([]);
 
   const handleRouteChange = (route) => {
     navigate(route);
@@ -39,14 +49,23 @@ export default function FundTransfer(props) {
     getUserInfo().then((res) => {
       if (res.status === 200) {
         setUserInfo(res.data);
-        setFromAccount(res.data.account.accNumber)
+        setFromAccount(res.data.account.accNumber);
       } else {
         // redirect to login
         if (res.data.message.includes("invalid token")) {
-          handleRouteChange("/session-expired")
-        }
-        else
-          handleRouteChange("/login");
+          handleRouteChange("/session-expired");
+        } else handleRouteChange("/login");
+      }
+    });
+
+    getPayees().then((res) => {
+      if (res.status === 200) {
+        setPayeeList(res.data);
+      } else {
+        // redirect to login
+        if (res.data.message.includes("invalid token")) {
+          handleRouteChange("/session-expired");
+        } else toast.error(res?.data?.message);
       }
     });
   }, []);
@@ -61,17 +80,8 @@ export default function FundTransfer(props) {
 
   const handleTransaction = () => {
     const { check, message } = sanityCheck();
-    //   {
-    //     "fromAcc": 1,
-    //     "toAcc": 3,
-    //     "amount": 70000,
-    //     "transType": "NEFT",
-    //     "timeStamp": "2027-09-07",
-    //     "pin": "1234"
-    // }
 
     if (check) {
-
       const data = {
         fromAcc: fromAccount,
         toAcc: toAccount,
@@ -82,14 +92,13 @@ export default function FundTransfer(props) {
       };
       createTransaction(data).then((res) => {
         if (res.status === 201) {
-          toast.success("Transaction successfull with id: " + res.data.transId);
+          toast.success("Transaction successful with id: " + res.data.transId);
         } else {
           toast.error(res.data.message);
         }
       });
-    }
-    else {
-      toast.error(message)
+    } else {
+      toast.error(message);
     }
   };
 
@@ -133,22 +142,50 @@ export default function FundTransfer(props) {
                 margin: "10px 5px",
               }}
               disabled={true}
-              value={
-                fromAccount
-              }
+              value={fromAccount}
             />
-            <TextField
-              required
-              id="outlined-required"
-              label="To Account"
-              placeholder="enter receivers account number"
+            <div
               sx={{
-                width: "400px",
-                margin: "10px 5px",
+                display: "flex",
               }}
-              value={toAccount}
-              onChange={(e) => setToAccount(e.target.value)}
-            />
+            >
+              <FormControl
+                sx={{
+                  width: "400px",
+                  margin: "10px 5px",
+                }}
+              >
+                <InputLabel id="demo-simple-select-label">
+                  To Account
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={toAccount}
+                  label="To Account"
+                  onChange={(e) => setToAccount(e.target.value)}
+                >
+                  {payeeList.map((payee) => (
+                    <MenuItem key={payee.id} value={payee.beneficiaryAccNumber}>
+                      {payee.beneficiaryName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <Fab
+                color="primary"
+                aria-label="add"
+                variant="extended"
+                sx={{
+                  width: "150px",
+                  margin: "10px 5px",
+                }}
+                onClick={() => handleRouteChange("/dashboard/add-payee")}
+              >
+                <AddIcon sx={{ mr: 1 }} />
+                Add Payee
+              </Fab>
+            </div>
             <TextField
               required
               id="outlined-required"
@@ -201,25 +238,6 @@ export default function FundTransfer(props) {
                 />
               </RadioGroup>
             </FormControl>
-
-            {/* <TextField
-              id="outlined-required"
-              label="Maturity Instructions"
-              placeholder="enter maturity instructions if any"
-              sx={{
-                width: "400px",
-                margin: "10px 5px",
-              }}
-            />
-            <TextField
-              id="outlined-required"
-              label="Remark"
-              placeholder="enter remarks if any"
-              sx={{
-                width: "400px",
-                margin: "10px 5px",
-              }}
-            /> */}
             <TextField
               id="outlined-required"
               label="PIN"
@@ -242,25 +260,6 @@ export default function FundTransfer(props) {
           >
             Continue
           </Button>
-          {/* <TextField
-            required
-            id="outlined-required"
-            label="Enter OTP"
-            placeholder="enter OTP sent to your email id"
-            sx={{
-              width: "400px !important",
-              margin: "10px 5px !important",
-            }}
-          />
-          <Button
-            variant="contained"
-            sx={{
-              width: "400px",
-              margin: "10px 5px",
-            }}
-          >
-            Confirm
-          </Button> */}
         </div>
       </Container>
     </Box>

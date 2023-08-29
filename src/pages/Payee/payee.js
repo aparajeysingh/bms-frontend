@@ -2,17 +2,7 @@ import React, { useState } from "react";
 import { Box, Button, TextField, Toolbar, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-import CustomDatePicker from "../../components/CusotmDatePicker";
-import { transactionType } from "../../utils/constants";
-import CustomDropDown from "../../components/CustomDropDown";
 import Container from "@mui/material/Container";
-import Card from "@mui/material/Card";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
-import { getUserInfo } from "../../services/userService";
 import { addPayee } from "../../services/payeeService";
 
 export default function Payee(props) {
@@ -75,10 +65,8 @@ export default function Payee(props) {
           setNickName("");
         } else {
           if (res.data.message.includes("invalid token")) {
-            handleRouteChange("/session-expired")
-          }
-          else
-            toast.error("Something went wrong, " + res.data.message);
+            handleRouteChange("/session-expired");
+          } else toast.error(res?.data?.message);
         }
       });
     } else {

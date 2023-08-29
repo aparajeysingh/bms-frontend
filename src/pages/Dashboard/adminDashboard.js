@@ -8,6 +8,7 @@ import { getAccountsToApprove } from "../../services/adminService";
 import { useNavigate } from "react-router-dom";
 import CustomCard from "../../components/CustomCard";
 import Grid from "@mui/material/Grid";
+import { Button } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -22,10 +23,8 @@ export default function AdminDashboard() {
       } else {
         // redirect to login
         if (res.data.message.includes("invalid token")) {
-          handleRouteChange("/session-expired")
-        }
-        else
-          handleRouteChange("/admin-login");
+          handleRouteChange("/session-expired");
+        } else handleRouteChange("/admin-login");
       }
     });
   }, []);
@@ -41,10 +40,28 @@ export default function AdminDashboard() {
         position="fixed"
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
-        <Toolbar>
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
           <Typography variant="h6" noWrap component="div">
             Welcome Admin
           </Typography>
+          <Button
+            variant="outlined"
+            sx={{
+              color: "white",
+              borderColor: "white",
+            }}
+            onClick={() => {
+              localStorage.clear();
+              handleRouteChange("/");
+            }}
+          >
+            Logout
+          </Button>
         </Toolbar>
       </AppBar>
       <div

@@ -17,7 +17,7 @@ export default function CustomCard(props) {
       if (res.status === 200) {
         toast.success("Account approved successfully");
       } else {
-        toast.error("Something went wrong");
+        toast.error(res?.data?.message);
       }
     });
   };
@@ -29,7 +29,7 @@ export default function CustomCard(props) {
       if (res.status === 200) {
         toast.success("Account disapproved successfully");
       } else {
-        toast.error("Something went wrong");
+        toast.error(res?.data?.message);
       }
     });
   };
